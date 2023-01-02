@@ -1,0 +1,32 @@
+Q2 . Combination Sum with a twist.
+
+Link : https://leetcode.com/problems/combination-sum-iii/
+
+Solution: 
+
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void solve(int i,int k,int sum,vector<int> v){
+        if(sum == 0 && k == 0){
+           ans.push_back(v);
+           return;
+        }
+        
+        if(i > 9 || sum < 0)
+            return;
+
+        if(sum >= i && k){
+            v.push_back(i);
+            solve(i+1,k-1,sum-i,v);
+            v.pop_back();
+        }
+        solve(i+1,k,sum,v);
+    }
+
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int> v;
+        solve(1,k,n,v);
+        return ans;
+    }
+};
