@@ -1,0 +1,46 @@
+Q7. Scheduling a Course.
+
+solution: 
+
+class Solution {
+public:
+
+
+          int solve(vector<int> adj[],vector<int> &vis,vector<int> &curVis,int i,int n){
+              vis[i] = 1;
+              curVis[i] = 1;
+
+              for(auto it: adj[i]){
+                  if(curVis[it]){
+                      return true;
+                  }else if(vis[it] == 0){
+                      if(solve(adj,vis,curVis,it,n))
+                         return true;
+                  }
+              }
+
+              curVis[i] = 0;
+              return false;
+          }
+
+          bool canFinish(int numCourses, vector<vector<int>>& prereq) {
+              vector<int> adj[numCourses+1];
+              int n = prereq.size();
+              for(int i=0;i<n;i++){
+                   adj[prereq[i][0]].push_back(prereq[i][1]);
+              }
+
+              vector<int> vis(numCourses+1,0);
+              vector<int> curVis(numCourses+1,0);
+              for(int i=0;i<numCourses;i++){
+                  if(vis[i] == 0){
+                      if(solve(adj,vis,curVis,i,n))
+                         return false;
+                  }
+              }
+
+              return true;
+          }
+          
+------------------------------------------------------------------------------------------------------------------------------------------------------------          
+      };
