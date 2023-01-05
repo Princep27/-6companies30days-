@@ -1,0 +1,114 @@
+Q5. Largest Divisible Subset.
+Link: https://leetcode.com/problems/largest-divisible-subset/
+
+Solution: 
+class Solution {
+public:
+
+          vector<int> largestDivisibleSubset(vector<int>& nums) {
+              int n = nums.size();
+              sort(nums.begin(),nums.end());
+
+              vector<int> divCount(n,0);
+              vector<int> prev(n,-1);
+
+              int maxIndex = 0;
+              for(int i=1;i<n;i++){
+                  for(int j=0;j<i;j++){
+                      if(nums[i] % nums[j] == 0){
+                          if(divCount[i] < divCount[j]+1){
+                              divCount[i] = divCount[j] + 1;
+                              prev[i] = j; 
+                          }
+                      }
+                  }
+              }
+
+              for(int i=0;i<n;i++){
+                  if(divCount[maxIndex] < divCount[i]){
+                      maxIndex = i;
+                  }
+              }
+
+              vector<int> ans;
+              ans.push_back(nums[maxIndex]);
+
+              maxIndex = prev[maxIndex];
+              while(maxIndex != -1){
+                  ans.push_back(nums[maxIndex]);
+                  maxIndex = prev[maxIndex];
+              }
+
+              return ans;
+          }
+      };
+      
+   -------------------------------------------------------------------X----------------------------------------------------------------------------------------
+
+  -->  ANOTHER APPROACH USING RECUSION
+
+
+         class Solution {
+      public:
+
+          unordered_map<int,int> mp;
+
+          int solve(vector<int> &arr,int n,int p){
+              int num = arr[p];
+              int maxi = 1;
+              if(mp[arr[p]])
+                  return mp[arr[p]];
+
+              for(int i=p+1;i<n;i++){
+                  if(arr[i]%num == 0){
+                      maxi = max(1 + solve(arr,n,i),maxi);
+                  }
+              }
+              return mp[arr[p]] = maxi;
+          }
+
+          int findMaxDivisible(vector<int> &nums,int n,int j){
+              int maxi = -1;
+              for(int i=0;i<n;i++){
+                  if(nums[i]%nums[j] == 0 && i!=j){
+                      if(maxi == -1){
+                          maxi = i;
+                      }else{
+                          if(mp[nums[maxi]] < mp[nums[i]])
+                             maxi = i;
+                      }
+                  }
+              }
+              return maxi;
+          }
+
+          vector<int> largestDivisibleSubset(vector<int>& nums) {
+              int n = nums.size();
+              vector<int> ans;
+
+              sort(nums.begin(),nums.end());
+
+              for(int i=0;i<n;i++){
+                 solve(nums,n,i);
+              }
+
+              int maxIndex = n-1;
+              for(int i=0;i<n;i++) if(mp[nums[i]] > mp[nums[maxIndex]]) maxIndex = i;
+              ans.push_back(nums[maxIndex]);
+
+              while(true){
+                  int temp = findMaxDivisible(nums,n,maxIndex);
+                  if(temp == -1)
+                     return ans;
+
+                  ans.push_back(nums[temp]);
+                  maxIndex = temp;
+              }
+
+              return ans;
+          }
+      };
+      
+      
+      -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
