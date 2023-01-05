@@ -1,1 +1,33 @@
 Q12. Longest Happy Prefix
+
+Solution : 
+
+        //HERE WE USE THE CONCEPT OF STRING HASHING (ROLLING HASH)
+        
+        class Solution {
+        public:
+            int mod = 1e9+7;
+            string longestPrefix(string s) {
+                int n = s.length();
+                string str1 = "", str2 = "";
+                int i = 0, j = n-1;
+
+                string ans = "";
+                long long hash1 = 0,hash2 = 0,base = 1;
+                int maxi = -1;
+
+                while(i < n-1 && j > 0){
+                    hash1 = (hash1*27 + (s[i]-'a'+1))%mod;
+                    hash2 = (hash2 + base*(s[j]-'a'+1))%mod;
+                    base = (base*27)%mod;
+                    if(hash1 == hash2)
+                       maxi = max(i,maxi);
+                    i++;
+                    j--;
+                }
+
+                return s.substr(0,maxi+1);
+            }
+        };
+        
+    ----------------------------------------------------------------------------------------------------------
