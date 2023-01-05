@@ -1,3 +1,15 @@
 Q13. Seat Arrangement in a SpiceJet Problem - Online OA February ‘22
 
-Solution: need to be updated
+Solution: 
+
+     USING MATHEMATICAL INDUCATION THIS CAN BE PROVED
+     
+     class Solution {
+    public double nthPersonGetsNthSeat(int n) {
+        if(n==1)
+            return 1;
+        else
+            return 0.5;
+        }
+    }
+     
