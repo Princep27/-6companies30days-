@@ -1,0 +1,56 @@
+Q11. Number of ways to arrive at a Destination.
+Link : https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/description/
+
+Solution :
+
+        class Solution {
+        public:
+            int mod = 1e9+7;
+            void solve(vector<pair<int,int>> adj[],vector<long long> &ways,vector<long long> &dis,int n){
+                priority_queue< pair<long long,long long>, 
+                           vector<pair<long long,long long>>,
+                           greater<pair<long long,  long long>> > pq;
+
+                //{dis,node}
+                pq.push({0,0});
+                while(!pq.empty()){
+                    long long node = pq.top().second;
+                    long long wet = pq.top().first;
+                    pq.pop();
+
+                    for(auto it: adj[node]){
+
+                        long long adjNode = it.first;
+                        long long dist = it.second;
+
+                        if(dis[adjNode] > wet + dist){
+                            dis[adjNode] = wet + dist;
+                            pq.push({wet + dist,adjNode});
+                            ways[adjNode] = ways[node];
+
+                        }else if(dis[adjNode] == wet + dist){
+                            ways[adjNode] = (ways[adjNode]%mod + ways[node]%mod)%mod;
+                        }
+                    }
+                }
+            }
+
+            int countPaths(int n, vector<vector<int>>& roads) {
+                int edges = roads.size();
+                vector<pair<int,int>> adj[n];
+
+                for(int i=0;i<edges;i++){
+                    adj[roads[i][0]].push_back({roads[i][1],roads[i][2]});
+                    adj[roads[i][1]].push_back({roads[i][0],roads[i][2]});
+                }
+
+                //dijkstra
+                vector<long long> ways(n,0);
+                vector<long long> dis(n,LONG_MAX);
+                ways[0] = 1;
+                dis[0] = 0;
+                solve(adj,ways,dis,n);
+
+                return ways[n-1];
+            }
+        };
