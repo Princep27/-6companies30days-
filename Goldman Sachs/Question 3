@@ -1,0 +1,52 @@
+Q3. Factorial Trailing Zeroes
+Link: https://leetcode.com/problems/factorial-trailing-zeroes/
+
+Soltion: 
+ 
+ //BRUTE FORCE
+ 
+         class Solution {
+        public:
+            int trailingZeroes(int n) {
+                int fives = 0;
+                int twos = 0;
+                if(n == 0)
+                   return 0;
+
+                for(int i=2;i<=n;i++){
+                    int temp = i;
+                    while(temp%2 == 0){
+                        twos++;
+                        temp = temp/2;
+                    }
+
+                    while(temp%5 == 0){
+                        fives++;
+                        temp = temp/5;
+                    }
+                }
+
+                return min(fives,twos);
+            }
+        };
+   
+  ---------------------------------------------------------------------------------------------------------------------------------
+  //USING MATHEMATICAL OBSERVATION
+  
+        class Solution {
+            public:
+                int trailingZeroes(int n) {
+                    if(n == 0)
+                       return 0;
+
+                    int count = 0;
+                    while(n){
+                        count += n/5;
+                        n = n/5;
+                    }
+
+                    return count;
+                }
+            }
+            
+  ----------------------------------------------------------------------------------------
