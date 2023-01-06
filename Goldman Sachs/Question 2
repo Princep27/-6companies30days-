@@ -1,0 +1,50 @@
+Q2. Valid Square
+Link : https://leetcode.com/problems/valid-square/
+
+Solution :
+ 
+ class Solution {
+public:
+
+          bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+              //dist = square-root(b2-b1)(b2-b1) + (a2-a1)(a2-a1)
+              int x1 = p1[0], y1 = p1[1];
+              int x2 = p2[0], y2 = p2[1];
+              int x3 = p3[0], y3 = p3[1];
+              int x4 = p4[0], y4 = p4[1];
+              vector<pair<int,int>> vp;
+              vp.push_back({x1,y1});
+              vp.push_back({x2,y2});
+              vp.push_back({x3,y3});
+              vp.push_back({x4,y4});
+
+              unordered_map<long long,long> mp;
+              for(int i=0;i<4;i++){
+                  for(int j=0;j<4;j++){
+                      if(i!=j){
+                          int a1 = vp[i].first, a2 = vp[j].first, b1 = vp[i].second,b2 = vp[j].second;
+                          long long dist = (b2-b1)*(b2-b1) + (a2-a1)*(a2-a1);
+                          mp[dist]++;
+                          if(!dist)
+                             return false;
+                      }
+                  }
+              }
+
+              if(mp.size() != 2)
+                 return false;
+
+              int dis[2] = {0};
+              int i = 0;
+              for(auto it: mp){
+                  cout<<it.first<<" "<<it.second<<endl;
+                  dis[i] = it.second;
+                  i++;
+              }
+
+              if((dis[0] == 4 && dis[1] == 8) || (dis[1] == 4 && dis[0] == 8))
+                 return true;
+
+              return false;
+          }
+      };
