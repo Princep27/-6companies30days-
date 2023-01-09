@@ -1,0 +1,45 @@
+Q8. Maximum Points in an Archery Competition
+Link : https://leetcode.com/problems/maximum-points-in-an-archery-competition/description/
+
+Solution: 
+
+        class Solution {
+        public:
+            vector<int> ans;
+            vector<int> final;
+            int finalAnswer  = INT_MIN;
+            void solve(int i,int arrows,vector<int> &aA,int answer){
+                if(i == 0){
+                    ans[i] = arrows;
+                    if(answer > finalAnswer){
+                       final = ans;
+                       finalAnswer = answer;
+                    }
+                    ans[i] = 0;
+                    return;
+                }
+
+                if(aA[i] <= arrows){
+                    ans[i] = aA[i];
+                    solve(i-1,arrows-aA[i],aA,answer+i);
+                    ans[i] = 0;
+                    solve(i-1,arrows,aA,answer);
+                }else{
+                    solve(i-1,arrows,aA,answer);
+                }
+
+                ans[i] = 0;
+            } 
+
+            vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
+                vector<int> v(12,0);
+                ans.resize(12,0);
+
+                int answer = 0;
+                for(int i=1;i<12;i++)
+                   v[i] = aliceArrows[i] + 1;
+
+                solve(11,numArrows,v,answer);
+                return final;
+            }
+        };
