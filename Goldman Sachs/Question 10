@@ -1,0 +1,27 @@
+Q10. People and Secret.
+Link : https://leetcode.com/problems/number-of-people-aware-of-a-secret/description/
+
+Solution :
+
+      class Solution {
+      public:
+          int mod = 1e9+7;
+          int peopleAwareOfSecret(int n, int delay, int forget) {
+              vector<long> count(n+1,0);
+              count[1] = 1;
+
+              for(int i=1;i<=n;i++){  
+
+                  for(int j=i+delay;j<=n && j<i+forget;j++){
+                    count[j] = (count[j] + count[i])%mod;
+                  }
+              }
+
+              long ans = 0;
+              for(int i=n;i>n-forget;i--){
+                  ans  = (ans + count[i])%mod;
+              }
+
+              return ans;
+          }
+      };
