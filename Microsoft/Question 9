@@ -1,3 +1,79 @@
 Q9. Number of Pairs satisfying Inequality.
+Link : https://leetcode.com/problems/number-of-pairs-satisfying-inequality/solutions/
 
-Solution : Need to be updated .......
+Solution : 
+
+        class Solution {
+        public:
+            long long ans = 0;
+            int mod = 1e9+7;
+
+            void count(int a[],int b[],int n,int m,int diff){
+
+                 int i = 0, j = 0;
+                 while(i < n && j < m){
+                     if(a[i] <= (b[j]+diff)){
+                         ans += m-j;
+                         i++;
+                     }else{
+                         j++;
+                     }
+                 }
+            }
+
+            void merge(vector<int> &arr,int l,int mid,int r,int diff){
+                int n = mid-l+1;
+                int m = r-mid;
+
+                int a[n],b[m];
+                for(int i=0;i<n;i++)
+                a[i] = arr[i+l];
+                for(int i=0;i<m;i++)
+                b[i] = arr[mid+1+i];
+
+                count(a,b,n,m,diff);
+
+                int i = 0, j = 0, k = l;
+                while(i < n && j < m){
+                    if(a[i] <= b[j]){
+                        arr[k] = a[i];
+                        i++;
+                    }else{
+                        arr[k] = b[j];
+                        j++;
+                    }
+                    k++;
+                }   
+
+                while(i < n){
+                    arr[k] = a[i];
+                    i++;k++;
+                }
+
+                while(j < m){
+                    arr[k] = b[j];
+                    j++;k++;
+                }
+            }
+
+            void mergeSort(vector<int> &arr,int l,int r,int diff){
+                if(l < r){
+                    int mid = (l+r)/2;
+                    mergeSort(arr,l,mid,diff);
+                    mergeSort(arr,mid+1,r,diff);
+                    merge(arr,l,mid,r,diff);
+                }
+            }
+
+
+            long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
+                //nums1[i] - nums2[i] <= nums1[j] - nums2[j] + diff
+                int n = nums1.size();
+                vector<int> arr(n,0);
+                for(int i=0;i<n;i++)
+                   arr[i] = nums1[i] - nums2[i];
+
+                mergeSort(arr,0,n-1,diff);
+                return ans;
+            }
+        };
