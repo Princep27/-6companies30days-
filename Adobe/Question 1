@@ -1,0 +1,59 @@
+Q1. Fraction to a recurring Decimal
+Link: https://leetcode.com/problems/fraction-to-recurring-decimal/submissions/877368895/
+
+Solution: 
+
+class Solution {
+public:
+
+        string fractionToDecimal(int a, int b) {
+            long num = a,den = b;
+            long rem = 0, que = 0,index = 1,repIndex = -1;
+            string ans = "";
+
+            if((num < 0 && den > 0) || (num > 0 && den < 0))
+               ans.push_back('-');
+
+            if(num < 0) num = -num;
+            if(den < 0) den = -den;
+
+            ans += to_string(num/den);
+            if(num%den == 0){
+                return ans;
+            }
+
+            unordered_map<long,int> mp;
+            string decimal = "";
+            rem = num%den;
+
+            mp[rem] = 0;
+            while(rem){
+
+                num = rem*10;
+                que = num/den;
+                rem = num%den;
+
+                decimal.push_back(char('0'+que));
+
+                if(mp.find(rem) != mp.end()){
+                    repIndex = mp[rem];
+                    break;
+                }
+                mp[rem] = index;
+                index++;
+            }
+
+            ans.push_back('.');
+            for(int i=0;i<decimal.size();i++){
+                if(repIndex == i)
+                   ans.push_back('(');
+
+                ans.push_back(decimal[i]);
+            }
+
+            if(repIndex != -1)
+               ans.push_back(')');
+
+            return ans;
+        }
+    };
