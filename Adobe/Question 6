@@ -1,0 +1,39 @@
+Q6. Knight Probability in Chessboard
+Link : https://leetcode.com/problems/knight-probability-in-chessboard/
+
+Solution : 
+
+      class Solution {
+      public:
+          double dp[25][25][102] = {0};
+          double find(int n,int k,int i,int j){
+              if(i<0 || j<0 || i>=n || j>=n)
+                 return 0;
+
+              if(k == 0){
+                  return 1;
+              }
+
+              if(dp[i][j][k] != 0)
+                 return dp[i][j][k];
+
+              int r[] = {-2,-1, 1, 2, 2, 1,-1,-2};
+              int c[] = {-1,-2,-2,-1, 1, 2, 2, 1};
+
+              double temp = 0;
+              for(int p=0;p<8;p++){
+                  int x = i + r[p];
+                  int y = j + c[p];
+                  temp += 0.125*find(n,k-1,x,y);
+              }
+
+              return dp[i][j][k] = temp;
+          }
+
+          double knightProbability(int n, int k, int row, int column) {
+              if(k == 0)
+                return 1.00000;
+
+              return find(n,k,row,column);
+          }
+      };
