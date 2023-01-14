@@ -1,0 +1,49 @@
+Q9. Count nodes equal to average of subtree.
+Solution :
+
+      class Solution {
+      public:
+          int cnt = 0;
+          unordered_map<TreeNode*,int> mp;
+
+          int solve(TreeNode *root){
+              if(root == NULL)
+                 return 0;
+
+              if(root->left == NULL && root->right == NULL){
+                  mp[root] = root->val;
+                  return root->val;
+              }
+
+              int left = solve(root->left);
+              int right = solve(root->right);
+
+              int temp = left + right + root->val;
+              mp[root] = temp;
+              return temp;
+          }
+
+          int count(TreeNode *root){
+
+              if(!root)
+                 return 0;
+
+              if(root->left == NULL && root->right == NULL){
+                  cnt++;
+                  return 1;
+              }
+
+              int left = count(root->left);
+              int right = count(root->right);
+              if(mp[root]/(left+right+1) == root->val)
+                 cnt++;
+
+              return 1 + left + right;
+          }
+
+          int averageOfSubtree(TreeNode* root) {
+              solve(root);
+              count(root);
+              return cnt;
+          }
+      };
