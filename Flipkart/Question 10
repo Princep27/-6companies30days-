@@ -1,0 +1,40 @@
+Q10.  Distant Barcodes
+https://leetcode.com/problems/distant-barcodes/
+
+Solution:
+
+      class Solution {
+      public:
+          vector<int> rearrangeBarcodes(vector<int>& barcodes) {
+              unordered_map<int,int> mp;
+              int n = barcodes.size();
+
+              for(int i=0;i<n;i++){
+                  mp[barcodes[i]]++;
+              }
+
+              vector<int> ans;
+              int len = 0;
+
+              while(len < n){
+                  for(auto& it:mp){
+                      int val = it.first;
+                      int count = it.second;
+
+                      ans.push_back(val);
+                      len++;
+
+                      if(len == n)
+                        break;
+
+                      if(count == 1){
+                          mp.erase(val);
+                      }else{
+                          mp[val] -= 1;
+                      }
+                  }
+              }
+
+              return ans;
+          }
+      };
