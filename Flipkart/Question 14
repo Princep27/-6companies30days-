@@ -1,0 +1,36 @@
+Q14. Custom Sort String
+https://leetcode.com/problems/custom-sort-string/
+
+Solution: 
+
+        class Solution {
+        public:
+            string customSortString(string order, string s) {
+               int hash[30] = {0};
+               int n = s.length(), m = order.length();
+               for(int i=0;i<n;i++){
+                   hash[s[i]-'a']++;
+               }
+
+               string ans = "";
+               for(int i=0;i<m;i++){
+                   if(hash[order[i]-'a']){
+                       int len = hash[order[i]-'a'];
+                       for(int j=0;j<len;j++)
+                       ans.push_back(order[i]);
+
+                       hash[order[i]-'a'] = 0;
+                   }  
+               }
+
+               for(int i=0;i<30;i++){
+                   if(hash[i]){
+                       int len = hash[i];
+                       for(int j=0;j<len;j++)
+                       ans.push_back(char(i+'a'));
+                   }
+               }
+
+               return ans;
+            }
+        };
