@@ -1,0 +1,54 @@
+Q1. Partition to K Equal Sum Subsets
+https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
+
+Solution : 
+
+      class Solution {
+      public:
+          vector<int> vis;
+          int solve(vector<int> &arr,int n,int start,int k,int sum,int target){
+              if(k == 0){
+                 return true;
+              }
+
+              if(sum > target){
+                  return false;
+              }
+
+              if(target == sum){
+                  return solve(arr,n,0,k-1,0,target);
+              }
+
+              for(int i=start;i<n;i++){
+                  if(!vis[i]){
+                      vis[i] = 1;
+                      if(solve(arr,n,i+1,k,sum+arr[i],target))
+                         return true;
+                      vis[i] = 0;
+                  }
+              }
+
+              return false;
+          }
+
+          bool canPartitionKSubsets(vector<int>& nums, int k) {
+              int sum = 0;
+              int n = nums.size();
+              if(k == 1)
+                 return 1;
+
+              for(int i=0;i<n;i++)
+                 sum += nums[i];
+
+              if(sum % k)
+                 return false;
+
+              sum = sum/k;
+              for(int i=0;i<n;i++)
+                 if(nums[i] > sum)
+                    return false;
+
+              vis.resize(n,0);
+              return solve(nums,n,0,k,0,sum);
+          }
+      };
