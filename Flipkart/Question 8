@@ -1,0 +1,42 @@
+Q8. Closest Primes in Range
+Link: https://leetcode.com/problems/closest-prime-numbers-in-range/
+
+Soltuion : 
+
+    class Solution {
+    public:
+        vector<int> closestPrimes(int left, int right) {
+            vector<int> prime(right+1,1);
+
+            for(long long i=2;i<=right;i++){
+                if(prime[i]){
+                    for(long long j=(i*i); j<=right; j+=i){
+                        prime[j] = 0;
+                    }
+                }
+            }      
+
+            int mini = INT_MAX, l = -1, r = -1;
+
+            vector<int> v;
+            for(int i=left;i<=right;i++){
+                if(prime[i])
+                   v.push_back(i);
+            }
+
+            for(int i=1;i<v.size();i++){
+                if(v[i-1] == 1)
+                  continue;
+                if(v[i] - v[i-1] < mini){
+                    mini = v[i] - v[i-1];
+                    l = v[i-1];
+                    r = v[i];
+                }
+            }
+
+            vector<int> ans;
+            ans.push_back(l);
+            ans.push_back(r);
+            return ans;
+        }
+    };
