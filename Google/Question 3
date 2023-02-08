@@ -1,0 +1,53 @@
+Q3. Sort an Array
+Solution: 
+
+    class Solution {
+    public:
+        void merge(vector<int> &arr,int l,int mid,int r){
+            int n = mid - l + 1, m = r - mid;
+            vector<int> a(n,0), b(m,0);
+
+            for(int i=0;i<n;i++)
+                a[i] = arr[i+l];
+            for(int i=0;i<m;i++)
+                b[i] = arr[i+mid+1];
+
+            int i = 0, j = 0,p = l;
+            while(i < n && j < m){
+                if(a[i] <= b[j]){
+                    arr[p] = a[i];
+                    i++;
+                }else{
+                    arr[p] = b[j];
+                    j++;
+                }
+                p++;
+            }
+
+            while(i < n){
+                arr[p] = a[i];
+                p++; i++;
+            }
+
+            while(j < m){
+                arr[p] = b[j];
+                p++; j++;
+            }
+        }
+
+        void mergeSort(vector<int> &arr,int l,int r){
+            if(l >= r){
+                return;
+            }
+
+            int mid = (l+r)/2;
+            mergeSort(arr,l,mid);
+            mergeSort(arr,mid+1,r);
+            merge(arr,l,mid,r);
+        }
+
+        vector<int> sortArray(vector<int>& nums) {
+            mergeSort(nums,0,nums.size()-1);
+            return nums;
+        }
+    };
