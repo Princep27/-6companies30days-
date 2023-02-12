@@ -1,0 +1,41 @@
+Q10.  Network Delay Time
+Solution: 
+
+    class Solution {
+    public:
+        int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+            vector<int> dist(n+1,INT_MAX);
+
+            vector<pair<int,int>> adj[n+1];
+            for(int i=0;i<times.size();i++){
+                adj[times[i][0]].push_back(make_pair(times[i][1],times[i][2]));
+            }
+
+            priority_queue<int> pq;
+            pq.push(k);
+
+            dist[k] = 0;
+            while(!pq.empty()){
+                int p = pq.top();
+                pq.pop();
+
+                for(auto it:adj[p]){
+                    int d = it.second;
+                    int q = it.first;
+
+                    if(dist[q] > dist[p] + d){
+                        dist[q] = dist[p] + d;
+                        pq.push(q);
+                    }
+                }
+            }
+
+            int ans = 0;
+            for(int i=1;i<=n;i++)
+                ans = max(ans,dist[i]);
+
+            if(ans == INT_MAX)
+               return -1;
+            return ans;
+        }
+    };
