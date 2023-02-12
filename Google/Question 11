@@ -1,0 +1,42 @@
+Q11. Matrix Block Sum
+Solution:
+
+    class Solution {
+    public:
+        int solve(vector<vector<int>> &arr,int imin,int imax,int jmin,int jmax){
+            int temp = 0;
+            for(int i=imin;i<=imax;i++){
+                for(int j=jmin;j<=jmax;j++){
+                    temp += arr[i][j];
+                }
+            }
+
+            return temp;
+        }
+
+        vector<vector<int>> matrixBlockSum(vector<vector<int>>& mat, int k) {
+            int n = mat.size();
+            int m = mat[0].size();
+
+            vector<vector<int>> ans(n,vector<int>(m));
+
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+
+                    int imin = i - k;
+                    int imax = i + k;
+                    int jmin = j - k;
+                    int jmax = j + k;
+
+                    if(imin < 0 ) imin = 0;
+                    if(jmin < 0 ) jmin = 0;
+                    if(imax >= n) imax = n-1;
+                    if(jmax >= m) jmax = m-1;
+
+                    ans[i][j] = solve(mat,imin,imax,jmin,jmax);
+                }
+            }
+
+            return ans;
+        }
+    };
