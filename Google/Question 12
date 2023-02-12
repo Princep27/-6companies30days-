@@ -1,0 +1,44 @@
+Q12. Restore IP Addresses
+Solution :
+
+      class Solution {
+      public:
+          long toInt(string s){
+              long temp = 0;
+              for(int i=0;i<s.length();i++){
+                  temp = temp*10 + (s[i]-'0');
+              }
+              return temp;
+          }
+          vector<string> restoreIpAddresses(string s) {
+              unordered_map<string,int> mp;
+              vector<string> ans;
+
+              int n = s.length();
+              for(int i=1;i<n;i++){
+                  for(int j=i+1;j<n;j++){
+                      for(int k=j+1;k<n;k++){
+                              long a = toInt(s.substr(0,i));
+                              long b = toInt(s.substr(i,j-i));
+                              long c = toInt(s.substr(j,k-j));
+                              long d = toInt(s.substr(k,n-k));
+
+                              if(a > 255 || b > 255 || c > 255 || d > 255)
+                                 continue;
+
+                              int al = s.substr(0,i).length(), bl = s.substr(i,j-i).length(), cl = s.substr(j,k-j).length(), dl = s.substr(k,n-k).length();
+                              if((al > 1 && a < pow(10,al-1)) || (bl > 1 && b < pow(10,bl-1)) || (cl > 1 && c < pow(10,cl-1)) || (dl > 1 && d < pow(10,dl-1)))
+                                 continue;
+
+                              string str = s.substr(0,i) + "." + s.substr(i,j-i) + "." + s.substr(j,k-j) + "." + s.substr(k,n-k);
+                              if(mp[str] == 0){
+                                  ans.push_back(str);
+                                  mp[str] = 1;
+                              }
+                      }
+                  }
+              }
+
+              return ans;
+          }
+      };
