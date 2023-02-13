@@ -1,0 +1,54 @@
+Q13. Swim in rising Water
+Solution : 
+
+      class Solution {
+      public:
+          int c[4] = { 1, 0 ,0, -1};
+          int r[4] = { 0, 1,-1, 0 };
+
+          int swimInWater(vector<vector<int>>& grid) {
+             int n = grid.size();
+             int m = grid[0].size();
+
+             vector<vector<int>> vis(n,vector<int>(m,0));
+             priority_queue<int,vector<int>,greater<int>> pq;
+
+             unordered_map<int,pair<int,int>> mp;
+             for(int i=0;i<n;i++){
+                 for(int j=0;j<m;j++){
+                     mp[grid[i][j]] = {i,j};
+                 }
+             }
+
+             pq.push(grid[0][0]);
+             vis[0][0] = 1;
+
+             int ans = grid[0][0];
+             while(!pq.empty()){
+
+                 int temp = pq.top();
+
+                 int x = mp[temp].first;
+                 int y = mp[temp].second;
+                 pq.pop();
+
+                 ans = max(ans,grid[x][y]);
+                 if(x == n-1 && y == n-1){
+                     break;
+                 }
+
+                 for(int i=0;i<4;i++){
+                     int x1 = x + c[i];
+                     int y1 = y + r[i];
+
+                     if(x1 >= 0 && y1 >= 0 && x1 < n  && y1 < m && !vis[x1][y1]){
+                         vis[x1][y1] = 1;
+                         pq.push(grid[x1][y1]);
+                     }
+                 }
+
+             }
+
+             return ans;
+          }
+      };
