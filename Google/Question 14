@@ -1,0 +1,56 @@
+Q14. Maximum Compatibility Score Sum
+
+Solution: 
+
+    class Solution {
+    public:
+        int ans = 0;
+
+        vector<vector<int>> all;
+        void perm(vector<int> &vis,int n,int i,vector<int> v){
+            if(i == n){
+               all.push_back(v);
+               return;
+            }
+
+            for(int j=0;j<n;j++){
+                if(vis[j] == 0){
+                    vis[j] = 1;
+                    v.push_back(j);
+                    perm(vis,n,i+1,v);
+                    v.pop_back();
+                    vis[j] = 0;
+                }
+            }
+        }
+
+        int maxCompatibilitySum(vector<vector<int>>& students, vector<vector<int>>& mentors) {
+            int n = students.size();
+            int m = students[0].size();
+
+            vector<int> vis(n,0);
+            vector<int> v;
+            perm(vis,n,0,v);
+
+            for(int i=0;i<all.size();i++){
+                int cur = 0;
+
+                vector<int> temp = all[i];
+
+                for(int j=0;j<temp.size();j++){
+
+                    students[j];
+                    mentors[temp[j]];
+
+                    for(int k = 0;k <m;k++){
+                        if(students[j][k] == mentors[temp[j]][k])
+                        cur++;
+                    }
+                }
+
+                ans = max(ans,cur);
+            }
+
+            return ans;
+        }
+    };
