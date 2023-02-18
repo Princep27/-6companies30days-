@@ -1,0 +1,27 @@
+Q3 . 
+Solution : 
+
+public:
+    unordered_set<string> st; //set to store all unique substrings
+    int ans=0;
+    void lol(int ind, string &s){
+        //if index exceeds string then store set size in ans
+        if(ind>=s.length()) {
+            ans = max(ans, (int)st.size());
+            return;
+        }
+        string temp=""; // temp string to iterate and store the substring
+        for(int i=ind;i<s.length();i++){
+            temp+=s[i];
+            if(st.find(temp)==st.end()){ //if the substring not found in set then 
+            //insert and call recursive function for the next index and string
+                st.insert(temp);
+                lol(i+1, s);
+                st.erase(temp); //backtrack (vv imp)
+            }
+        }
+    }
+    int maxUniqueSplit(string s) {
+        lol(0,s);
+        return ans; 
+    }
